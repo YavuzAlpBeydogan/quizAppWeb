@@ -1,0 +1,7 @@
+<h2>Quiz'e Hoş Geldin!</h2>
+<p>Bir dil seç:</p>
+<ul>
+  {% for lang in languages %}
+    <li><a href="{% url 'quiz' lang.id %}">{{ lang.name }}</a></li>
+  {% endfor %}
+</ul>

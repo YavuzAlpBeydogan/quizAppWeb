@@ -1,0 +1,52 @@
+<h2>{{ language.name }} Quiz</h2>
+<h2>Soru {{ forloop.counter }} / {{ questions|length }}</h2>
+
+<div id="timer" style="font-size: 24px; color: red; margin-bottom: 10px;">
+  Süre: <span id="time">30</span> saniye
+</div>
+
+
+<form method="POST">
+  {% csrf_token %}
+  {% for question in questions %}
+    <div>
+      <p>{{ question.text }}</p>
+      <input type="radio" name="{{ question.id }}" value="{{ question.option1 }}"> {{ question.option1 }}<br>
+      <input type="radio" name="{{ question.id }}" value="{{ question.option2 }}"> {{ question.option2 }}<br>
+      <input type="radio" name="{{ question.id }}" value="{{ question.option3 }}"> {{ question.option3 }}<br>
+      <input type="radio" name="{{ question.id }}" value="{{ question.option4 }}"> {{ question.option4 }}<br>
+    </div>
+    <hr>
+    <input type="hidden" name="question_id" value="{{ question.id }}">
+    <input type="hidden" name="next_q" value="{{ next_q }}">
+  {% endfor %}
+  <button type="submit">Gönder</button>
+
+
+</form>
+<script>
+  let timeLeft = 30;
+  const timerDisplay = document.getElementById('time');
+  const form = document.querySelector('form');
+
+  const countdown = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+      form.submit(); // ⏱️ Süre bitince otomatik gönder
+    }
+  }, 1000);
+</script>
+<style>
+  #timer {
+    font-weight: bold;
+    background-color: #fff8e1;
+    padding: 10px;
+    border: 2px solid #ffa726;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: inline-block;
+  }
+</style>

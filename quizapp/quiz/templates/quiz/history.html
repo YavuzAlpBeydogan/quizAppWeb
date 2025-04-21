@@ -1,0 +1,14 @@
+<h2>Geçmiş Quiz Sonuçların</h2>
+
+{% if results %}
+  <ul>
+    {% for r in results %}
+      <li>
+        <strong>{{ r.language.name }}</strong> — {{ r.score }}/{{ r.total }} 
+        <em>({{ r.date|date:"d M Y - H:i" }})</em>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Henüz quiz çözmedin.</p>
+{% endif %}
