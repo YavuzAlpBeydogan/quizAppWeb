@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import ProgrammingLanguage, Question, UserAnswer, QuizResult
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
+import uuid  # 👈 buraya ekle
+from .models import QuizResult
 
 
 def home(request):
@@ -11,7 +12,7 @@ def home(request):
 @login_required
 def quiz_view(request, language_id):
     language = get_object_or_404(ProgrammingLanguage, id=language_id)
-    questions = Question.objects.filter(language=language)
+    questions = list(Question.objects.filter(language=language).order_by('id'))
 
     if request.method == 'POST':
         question_id = int(request.POST.get('question_id'))
@@ -19,24 +20,26 @@ def quiz_view(request, language_id):
 
         question = get_object_or_404(Question, id=question_id)
 
-        # ✅ Cevaplanmamışsa selected_option None olur
-        correct = (selected_option == question.correct_option) if selected_option else False
+        correct = (selected_option.strip().lower() == question.correct_option.strip().lower()) if selected_option else False
+
+
 
         UserAnswer.objects.create(
             user=request.user,
             question=question,
-            selected_option=selected_option if selected_option else '',
+            selected_option=selected_option,
             is_correct=correct
         )
 
-        # ✅ Bir sonraki soruya geç
         next_q = int(request.POST.get('next_q'))
-        if next_q < questions.count():
-            question = questions[next_q]
+
+        if next_q < len(questions):
+            next_question = questions[next_q]
             return render(request, 'quiz/quiz.html', {
-                'question': question,
+                'question': next_question,
                 'next_q': next_q + 1,
-                'questions': questions,
+                'question_number': next_q + 1,
+                'total_questions': len(questions),
             })
         else:
             return redirect('result')
@@ -46,21 +49,30 @@ def quiz_view(request, language_id):
     return render(request, 'quiz/quiz.html', {
         'question': question,
         'next_q': 1,
-        'questions': questions,
+        'question_number': 1,
+        'total_questions': len(questions),
     })
-
-
+@login_required
+def history_view(request):
+    results = QuizResult.objects.filter(user=request.user).order_by('-date')
+    return render(request, 'quiz/history.html', {'results': results})
 @login_required
 def result_view(request):
-    user_answers = UserAnswer.objects.filter(user=request.user).order_by('-id')[:5]
+    quiz_session = request.session.get('quiz_session')
+
+    if not quiz_session:
+        return redirect('home')
+
+    user_answers = UserAnswer.objects.filter(
+        user=request.user,
+        quiz_session=quiz_session
+    )
+
     score = sum(1 for ua in user_answers if ua.is_correct)
+    total = user_answers.count()
 
-    # ✅ Quiz dili nedir? (son cevaplara bakarak)
     if user_answers:
-        language = user_answers[0].question.language
-        total = len(user_answers)
-
-        # ✅ Skoru kaydet
+        language = user_answers.first().question.language
         QuizResult.objects.create(
             user=request.user,
             language=language,
@@ -69,9 +81,3 @@ def result_view(request):
         )
 
     return render(request, 'quiz/result.html', {'score': score})
-
-
-@login_required
-def history_view(request):
-    results = QuizResult.objects.filter(user=request.user).order_by('-date')
-    return render(request, 'quiz/history.html', {'results': results})
