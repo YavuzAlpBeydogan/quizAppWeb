@@ -28,8 +28,7 @@ class UserAnswer(models.Model):
     selected_option = models.CharField(max_length=1, blank=True, null=True)
     is_correct = models.BooleanField()
     answered_at = models.DateTimeField(auto_now_add=True)
-
-    quiz_session = models.UUIDField(default=uuid.uuid4)  # 👈 Yeni alan
+    quiz_session = models.CharField(max_length=100, blank=True, null=True)  # ✅ BU ALANI EKLE
 
     def __str__(self):
         return f"{self.user.username} - {self.question.id}"
