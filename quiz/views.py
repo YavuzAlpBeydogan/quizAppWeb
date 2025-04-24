@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ProgrammingLanguage, Question, UserAnswer, QuizResult
 from django.contrib.auth.decorators import login_required
-import uuid  # 👈 buraya ekle
+import uuid 
 from .models import QuizResult
+from django.db.models import Max, Avg
+from django.contrib.auth.models import User
+
 
 
 def home(request):
@@ -71,7 +74,7 @@ def result_view(request):
     user_answers = UserAnswer.objects.filter(
         user=request.user,
         quiz_session=quiz_session
-    )
+    ).select_related('question')
 
     score = sum(1 for ua in user_answers if ua.is_correct)
     total = user_answers.count()
@@ -85,4 +88,30 @@ def result_view(request):
             total=total
         )
 
-    return render(request, 'quiz/result.html', {'score': score})
+    return render(request, 'quiz/result.html', {
+        'score': score,
+        'total': total,
+        'user_answers': user_answers,
+    })
+
+
+@login_required
+def leaderboard_view(request):
+    top_by_language = (
+        QuizResult.objects
+        .values('user__username', 'language__name')
+        .annotate(max_score=Max('score'))
+        .order_by('-max_score')
+    )
+
+    language_leaderboards = {}
+    for result in top_by_language:
+        lang = result['language__name']
+        if lang not in language_leaderboards:
+            language_leaderboards[lang] = []
+        language_leaderboards[lang].append(result)
+
+    return render(request, 'quiz/leaderboard.html', {
+        'top_by_language': language_leaderboards
+    })
+

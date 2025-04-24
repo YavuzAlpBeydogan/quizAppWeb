@@ -1,3 +1,27 @@
 <h2>Sonuç</h2>
-<p>Doğru Sayısı: {{ score }} / 5</p>
-<a href="/">Ana Sayfa</a>
+<p>Doğru Sayısı: {{ score }} / {{ total }}</p>
+
+<hr>
+
+<h3>Cevaplar:</h3>
+{% for answer in user_answers %}
+  <div style="margin-bottom: 20px;">
+    <p><strong>Soru:</strong> {{ answer.question.text }}</p>
+    <p>
+      <strong>Senin Cevabın:</strong> 
+      {% if answer.selected_option %}
+        {{ answer.selected_option }}
+      {% else %}
+        <em>Cevaplanmadı</em>
+      {% endif %}
+    </p>
+    <p><strong>Doğru Cevap:</strong> {{ answer.question.correct_option }}</p>
+
+    {% if answer.is_correct %}
+      <p style="color: green;">✔ Doğru</p>
+    {% else %}
+      <p style="color: red;">✘ Yanlış</p>
+    {% endif %}
+    <hr>
+  </div>
+{% endfor %}

@@ -1,0 +1,16 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+  <h2>🏆 Dil Bazlı Liderlik Tablosu</h2>
+
+  {% for language, scores in top_by_language.items %}
+    <h3>{{ language }}</h3>
+    <ol>
+      {% for score in scores %}
+        <li>{{ score.user__username }} - {{ score.max_score }} puan</li>
+      {% endfor %}
+    </ol>
+  {% endfor %}
+
+  <a href="{% url 'home' %}">🔙 Ana Sayfa</a>
+{% endblock %}

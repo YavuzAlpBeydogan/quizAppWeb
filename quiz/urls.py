@@ -6,4 +6,6 @@ urlpatterns = [
     path('quiz/<int:language_id>/', views.quiz_view, name='quiz'),
     path('result/', views.result_view, name='result'), 
     path('history/', views.history_view, name='history'),
+    path('leaderboard/', views.leaderboard_view, name='leaderboard'),
+    
 ]
