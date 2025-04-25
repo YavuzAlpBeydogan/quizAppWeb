@@ -1,16 +1,33 @@
 {% extends 'quiz/base.html' %}
 
 {% block content %}
-  <h2>🏆 Dil Bazlı Liderlik Tablosu</h2>
+<div class="container my-5">
+  <div class="card shadow-lg rounded-4 p-4">
+    <h2 class="text-center text-dark mb-4">🏆 Dil Bazlı Liderlik Tablosu</h2>
 
-  {% for language, scores in top_by_language.items %}
-    <h3>{{ language }}</h3>
-    <ol>
-      {% for score in scores %}
-        <li>{{ score.user__username }} - {{ score.max_score }} puan</li>
+    <div class="row g-4">
+      {% for language, scores in top_by_language.items %}
+        <div class="col-md-6">
+          <div class="card h-100 shadow-sm border-0 rounded-4">
+            <div class="card-body">
+              <h5 class="card-title text-center text-primary fw-bold mb-3">{{ language }}</h5>
+              <ol class="list-group list-group-numbered">
+                {% for score in scores %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">{{ score.user__username }}</span>
+                    <span class="badge bg-success rounded-pill">{{ score.max_score }} puan</span>
+                  </li>
+                {% endfor %}
+              </ol>
+            </div>
+          </div>
+        </div>
       {% endfor %}
-    </ol>
-  {% endfor %}
+    </div>
 
-  <a href="{% url 'home' %}">🔙 Ana Sayfa</a>
+    <div class="text-center mt-4">
+      <a href="{% url 'home' %}" class="btn btn-success px-4 py-2 rounded-pill">Ana Sayfa</a>
+    </div>
+  </div>
+</div>
 {% endblock %}

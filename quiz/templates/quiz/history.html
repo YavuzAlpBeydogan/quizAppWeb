@@ -1,20 +1,32 @@
 {% extends 'quiz/base.html' %}
+
 {% block content %}
-<h1>Merhaba, {{ user.username }}! </h1>
+<div class="container my-5">
+  <div class="card shadow-lg p-4 rounded-4">
+    <h1 class="text-center text-dark mb-2">👋 Merhaba, {{ user.username }}!</h1>
+    <h5 class="text-center text-primary mb-4">📝 Geçmiş Quiz Sonuçların</h5>
 
-<h6>Geçmiş Quiz Sonuçların</h6>
+    {% if results %}
+      <div class="list-group">
+        {% for r in results %}
+          <div class="list-group-item list-group-item-action mb-3 rounded-3 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fw-semibold text-dark">{{ r.language.name }}</span>
+              <span class="badge bg-success fs-6">{{ r.score }} / {{ r.total }}</span>
+            </div>
+            <div class="text-muted small">
+              📅 {{ r.date|date:"d M Y - H:i" }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-muted fst-italic">Henüz quiz çözmedin.</p>
+    {% endif %}
 
-{% if results %}
-  <ul>
-    {% for r in results %}
-      <li>
-        <strong>{{ r.language.name }}</strong> — {{ r.score }}/{{ r.total }} 
-        <em>({{ r.date|date:"d M Y - H:i" }})</em>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Henüz quiz çözmedin.</p>
-{% endif %}
-<a href="{% url 'home' %}">🔙 Ana Sayfa</a>
+    <div class="text-center mt-4">
+      <a href="{% url 'home' %}" class="btn btn-success px-4 py-2 rounded-pill">Ana Sayfa</a>
+    </div>
+  </div>
+</div>
 {% endblock %}

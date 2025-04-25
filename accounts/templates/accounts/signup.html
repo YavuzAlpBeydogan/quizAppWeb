@@ -1,24 +1,98 @@
 {% extends 'quiz/base.html' %}
+
 {% block content %}
-<div style="max-width: 400px; margin: auto; padding: 20px; background: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+<div class="signup-container">
 
-
-  <h2 style="text-align: center;">Kayıt Ol</h2>
+  <div class="signup-box">
+    <h2>Kayıt Ol</h2>
+    <p>
+      Hesabın var mı? <a href="{% url 'login' %}">Giriş Yap</a>
+    </p>
     
-  <p style="text-align: center;">
-    Hesabın var mı? <a href="{% url 'login' %}">Giriş Yap</a>
-  </p>
-  
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" style="width: 100%; padding: 10px; background-color: #388e3c; color: white; border: none; border-radius: 5px;">Kayıt Ol</button>
-  </form>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn">Kayıt Ol</button>
+    </form>
+  </div>
+
   <style>
-    .help {
-        display: none;
+    .signup-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+      background-color: #f0f2f5;
     }
-</style>
+
+    .signup-box {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .signup-box h2 {
+      margin-bottom: 10px;
+      font-size: 28px;
+      color: #333;
+    }
+
+    .signup-box p {
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .signup-box a {
+      color: #388e3c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .signup-box a:hover {
+      text-decoration: underline;
+    }
+
+    form p {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    form input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .btn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #2e7d32;
+    }
+  </style>
 
 </div>
 {% endblock %}
