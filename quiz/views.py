@@ -5,13 +5,15 @@ import uuid
 from .models import QuizResult
 from django.db.models import Max, Avg
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from accounts.forms import CustomUserCreationForm  # yeni formu import et
 
 
-
+@login_required
 def home(request):
     languages = ProgrammingLanguage.objects.all()
     return render(request, 'quiz/home.html', {'languages': languages})
-
 @login_required
 def quiz_view(request, language_id):
     language = get_object_or_404(ProgrammingLanguage, id=language_id)
@@ -115,3 +117,14 @@ def leaderboard_view(request):
         'top_by_language': language_leaderboards
     })
 
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'accounts/signup.html', {'form': form})

@@ -1,4 +1,8 @@
-<h2>Geçmiş Quiz Sonuçların</h2>
+{% extends 'quiz/base.html' %}
+{% block content %}
+<h1>Merhaba, {{ user.username }}! </h1>
+
+<h6>Geçmiş Quiz Sonuçların</h6>
 
 {% if results %}
   <ul>
@@ -12,3 +16,5 @@
 {% else %}
   <p>Henüz quiz çözmedin.</p>
 {% endif %}
+<a href="{% url 'home' %}">🔙 Ana Sayfa</a>
+{% endblock %}

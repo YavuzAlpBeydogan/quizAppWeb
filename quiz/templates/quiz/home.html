@@ -1,7 +1,16 @@
-<h2>Quiz'e Hoş Geldin!</h2>
-<p>Bir dil seç:</p>
-<ul>
-  {% for lang in languages %}
-    <li><a href="{% url 'quiz' lang.id %}">{{ lang.name }}</a></li>
-  {% endfor %}
-</ul>
+{% extends 'quiz/base.html' %}
+{% block content %}
+<h1 class="text-center">Hoş geldin, {{ user.username }}!</h1><br>
+  <div class="text-center">
+    <h4 class="mb-4">Sınava Girmek İçin Lütfen Aşağıdan Bir Programlama Dilini Seç </h4>
+    <div class="row justify-content-center">
+      {% for language in languages %}
+        <div class="col-md-3">
+          <a href="{% url 'quiz' language.id %}" class="btn btn-primary btn-lg m-2 w-100">
+            {{ language.name }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

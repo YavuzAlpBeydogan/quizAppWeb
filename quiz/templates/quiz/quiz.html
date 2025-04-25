@@ -1,26 +1,41 @@
-<h2>{{ language.name }} Quiz</h2>
-<h2>Soru {{ question_number }} / {{ total_questions }}</h2>
 
-<div id="timer" style="font-size: 24px; color: red; margin-bottom: 10px;">
-  Süre: <span id="time">5</span> saniye
-</div>
 
-<form method="POST">
-  {% csrf_token %}
+<div class="quiz-container">
+  <div class="quiz-card">
+    <h2>{{ language.name }} - Soru {{ question_number }} / {{ total_questions }}</h2>
 
-  <div>
-    <p>{{ question.text }}</p>
-    <input type="radio" name="option" value="{{ question.option1 }}"> {{ question.option1 }}<br>
-    <input type="radio" name="option" value="{{ question.option2 }}"> {{ question.option2 }}<br>
-    <input type="radio" name="option" value="{{ question.option3 }}"> {{ question.option3 }}<br>
-    <input type="radio" name="option" value="{{ question.option4 }}"> {{ question.option4 }}<br>
+    <div id="timer">
+      ⏱️ Süre: <span id="time">5</span> saniye
+    </div>
+
+    <form method="POST" class="quiz-form">
+      {% csrf_token %}
+      <p class="question-text">{{ question.text }}</p>
+
+      <label class="option">
+        <input type="radio" name="option" value="{{ question.option1 }}" >
+        {{ question.option1 }}
+      </label>
+      <label class="option">
+        <input type="radio" name="option" value="{{ question.option2 }}">
+        {{ question.option2 }}
+      </label>
+      <label class="option">
+        <input type="radio" name="option" value="{{ question.option3 }}">
+        {{ question.option3 }}
+      </label>
+      <label class="option">
+        <input type="radio" name="option" value="{{ question.option4 }}">
+        {{ question.option4 }}
+      </label>
+
+      <input type="hidden" name="question_id" value="{{ question.id }}">
+      <input type="hidden" name="next_q" value="{{ next_q }}">
+
+      <button type="submit" class="submit-btn">Gönder</button>
+    </form>
   </div>
-  <hr>
-  <input type="hidden" name="question_id" value="{{ question.id }}">
-  <input type="hidden" name="next_q" value="{{ next_q }}">
-
-  <button type="submit">Gönder</button>
-</form>
+</div>
 
 <script>
   let timeLeft = 5;
@@ -33,19 +48,80 @@
 
     if (timeLeft <= 0) {
       clearInterval(countdown);
-      form.submit(); // ⏱️ Süre bitince otomatik gönder
+      form.submit(); // Süre bitince otomatik gönder
     }
   }, 1000);
 </script>
 
 <style>
-  #timer {
-    font-weight: bold;
-    background-color: #fff8e1;
-    padding: 10px;
-    border: 2px solid #ffa726;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    display: inline-block;
-  }
+.quiz-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.quiz-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 650px;
+  width: 100%;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+#timer {
+  font-size: 20px;
+  color: #d84315;
+  background-color: #fff3e0;
+  border: 2px solid #ffa726;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.question-text {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  font-weight: 500;
+  color: #333;
+}
+
+.option {
+  display: block;
+  background: #f5f5f5;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.option:hover {
+  background-color: #e0f7fa;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+  transform: scale(1.1);
+}
+
+.submit-btn {
+  background-color: #1976d2;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #1565c0;
+}
 </style>
+
+

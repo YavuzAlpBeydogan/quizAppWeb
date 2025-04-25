@@ -1,7 +1,20 @@
-<h2>Giriş Yap</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Giriş Yap</button>
-</form>
-<p>Hesabın yok mu? <a href="{% url 'signup' %}">Kayıt Ol</a></p>
+
+
+{% extends 'quiz/base.html' %}
+{% block content %}
+<div style="max-width: 400px; margin: auto; padding: 20px; background: #f9f9f9; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+  <h2 style="text-align: center;">Giriş Yap</h2>
+  
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" style="width: 100%; padding: 10px; background-color: #1976d2; color: white; border: none; border-radius: 5px;">Giriş Yap</button>
+  </form>
+
+  <p style="margin-top: 10px; text-align: center;">
+    Hesabınız yok mu? 
+    <a href="{% url 'signup' %}">Hesap Oluştur</a>
+  </p>
+</div>
+
+{% endblock %}
