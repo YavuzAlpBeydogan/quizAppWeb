@@ -1,99 +1,52 @@
 {% extends 'quiz/base.html' %}
 
 {% block content %}
-<div class="result-container">
-  <h2 class="result-title">📊 Sonuçlar</h2>
-  <p class="score">✅ Doğru Sayısı: {{ score }} / {{ total }}</p>
+<div class="container my-5">
+  <div class="card shadow-lg p-4 rounded-4">
+    <h2 class="text-center text-primary mb-3">📊 Sonuçlar</h2>
+    <p class="text-center fs-4 text-success fw-bold">✅ Doğru Sayısı: {{ score }} / {{ total }}</p>
 
-  <hr>
+    <hr class="my-4">
 
-  <h3 class="answers-title">📌 Cevaplar</h3>
+    <h4 class="text-dark mb-4">📌 Cevaplar</h4>
 
-  {% for answer in user_answers %}
-    <div class="answer-card {% if answer.is_correct %}correct{% else %}incorrect{% endif %}">
-      <p><strong>Soru:</strong> {{ answer.question.text }}</p>
+    <div class="row g-4">
+      {% for answer in user_answers %}
+        <div class="col-12">
+          <div class="card {% if answer.is_correct %}border-success bg-light{% else %}border-danger bg-light{% endif %} shadow-sm rounded-4">
+            <div class="card-body">
+              <h5 class="card-title">
+                <strong>Soru:</strong> {{ answer.question.text }}
+              </h5>
 
-      <p>
-        <strong>Senin Cevabın:</strong> 
-        {% if answer.selected_option %}
-          {{ answer.selected_option }}
-        {% else %}
-          <em>Cevaplanmadı</em>
-        {% endif %}
-      </p>
+              <p class="mb-1">
+                <strong>Senin Cevabın:</strong>
+                {% if answer.selected_option %}
+                  {{ answer.selected_option }}
+                {% else %}
+                  <em class="text-muted">Cevaplanmadı</em>
+                {% endif %}
+              </p>
 
-      <p><strong>Doğru Cevap:</strong> {{ answer.question.correct_option }}</p>
+              <p class="mb-2"><strong>Doğru Cevap:</strong> {{ answer.question.correct_option }}</p>
 
-      {% if answer.is_correct %}
-        <p class="result-icon">✔ Doğru</p>
-      {% else %}
-        <p class="result-icon">✘ Yanlış</p>
-      {% endif %}
+              {% if answer.is_correct %}
+                <span class="badge bg-success px-3 py-2 rounded-pill">✔ Doğru</span>
+              {% else %}
+                <span class="badge bg-danger px-3 py-2 rounded-pill">✘ Yanlış</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
     </div>
-  {% endfor %}
+  </div>
 </div>
 
-<style>
-.result-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 30px;
-  background: #fafafa;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
-
-.result-title {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: #1976d2;
-}
-
-.score {
-  text-align: center;
-  font-size: 1.3rem;
-  color: #2e7d32;
-  margin-bottom: 30px;
-}
-
-.answers-title {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #444;
-}
-
-.answer-card {
-  padding: 20px;
-  margin-bottom: 20px;
-  border-left: 8px solid #ccc;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.answer-card.correct {
-  border-left-color: #66bb6a;
-  background-color: #e8f5e9;
-}
-
-.answer-card.incorrect {
-  border-left-color: #ef5350;
-  background-color: #ffebee;
-}
-
-.result-icon {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-top: 10px;
-}
-
-.correct .result-icon {
-  color: #388e3c;
-}
-
-.incorrect .result-icon {
-  color: #d32f2f;
-}
-</style>
+<script>
+  window.history.pushState(null, null, window.location.href);
+  window.onpopstate = function () {
+    window.location.href = "/";
+  };
+</script>
 {% endblock %}

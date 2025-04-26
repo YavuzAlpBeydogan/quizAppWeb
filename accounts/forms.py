@@ -38,3 +38,15 @@ class CustomUserCreationForm(UserCreationForm):
         if not re.search(r'[!@#$%^&*()_+{}\[\]:;<>,.?~\-]', password):
             raise forms.ValidationError("Şifre en az 1 sembol içermelidir.")
         return password
+
+from django.contrib.auth.forms import AuthenticationForm
+
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label='Kullanıcı Adı',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Kullanıcı Adı'})
+    )
+    password = forms.CharField(
+        label='Şifre',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Şifre'})
+    )

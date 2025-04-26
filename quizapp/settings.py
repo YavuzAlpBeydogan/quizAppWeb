@@ -113,7 +113,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+# settings.py
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-
 SESSION_COOKIE_AGE = 1800  # 30 dakika
 SESSION_SAVE_EVERY_REQUEST = True
