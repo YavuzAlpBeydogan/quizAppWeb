@@ -27,3 +27,26 @@ def login_view(request):
 
     return render(request, 'quiz/login.html', {'form': form})
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import authenticate, logout
+from django.shortcuts import render, redirect
+from quiz.models import QuizResult, UserAnswer
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user = authenticate(username=request.user.username, password=password)
+        if user:
+            # İlgili kullanıcıya ait tüm verileri sil
+            QuizResult.objects.filter(user=user).delete()
+            UserAnswer.objects.filter(user=user).delete()
+            # Kullanıcıyı sil
+            user.delete()
+            logout(request)
+            messages.success(request, "Hesabınız ve tüm verileriniz silindi.")
+            return redirect('home')  # Anasayfa URL ismini yaz
+        else:
+            messages.error(request, "Şifre yanlış. Lütfen tekrar deneyin.")
+    return render(request, 'accounts/delete_account.html')

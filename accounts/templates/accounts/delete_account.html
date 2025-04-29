@@ -1,0 +1,14 @@
+{% extends 'quiz/base.html' %}
+
+{% block title %}Hesabı Sil{% endblock %}
+
+{% block content %}
+  <h2>Hesabınızı Silmek Üzeresiniz</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <label>Şifrenizi girin:</label>
+    <input type="password" name="password" class="form-control" required>
+    <br>
+    <button type="submit" class="btn btn-danger">Hesabı Sil</button>
+  </form>
+{% endblock %}

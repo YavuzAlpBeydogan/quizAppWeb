@@ -11,11 +11,48 @@
     
     <form method="post">
       {% csrf_token %}
-      {{ form.as_p }}
+    
+      <p>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </p>
+    
+      <p style="position: relative;">
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        <span onclick="togglePassword('id_password1')" style="position: absolute; top: 38px; right: 10px; cursor: pointer;">
+          <i class="fas fa-eye" id="togglePasswordIcon_id_password1"></i>
+        </span>
+      </p>
+    
+      <p style="position: relative;">
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        <span onclick="togglePassword('id_password2')" style="position: absolute; top: 38px; right: 10px; cursor: pointer;">
+          <i class="fas fa-eye" id="togglePasswordIcon_id_password2"></i>
+        </span>
+      </p>
+    
       <button type="submit" class="btn">Kayıt Ol</button>
     </form>
+    
   </div>
-
+  <script>
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById('togglePasswordIcon_' + inputId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+  </script>
+  
   <style>
     .signup-container {
       display: flex;
@@ -93,6 +130,8 @@
       background-color: #2e7d32;
     }
   </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
 </div>
 {% endblock %}

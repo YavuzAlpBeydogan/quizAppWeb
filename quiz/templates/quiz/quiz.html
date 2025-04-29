@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+  <meta http-equiv="Cache-Control" content="no-store" />
   <meta charset="UTF-8">
   <title>QuizApp - Sınav</title>
+
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
@@ -176,11 +179,12 @@
   }, 1000);
 </script>
 <script>
-  window.history.pushState(null, null, window.location.href);
+  window.history.pushState(null, "", window.location.href);
   window.onpopstate = function () {
-    window.location.href = "/";  // Anasayfa URL'in burada
+      window.location.href = "/";
   };
 </script>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -14,14 +14,14 @@ class CustomUserCreationForm(UserCreationForm):
     )
 
     password1 = forms.CharField(
-        label="Şifre",
-        widget=forms.PasswordInput,
-        help_text="Şifreniz en az 8 karakter, 1 büyük harf ve 1 sembol içermelidir.",
-    )
+    label="Şifre",
+    widget=forms.PasswordInput(attrs={'id': 'id_password1'}),
+    help_text="Şifreniz en az 8 karakter, 1 büyük harf ve 1 sembol içermelidir.",
+)
 
     password2 = forms.CharField(
         label="Şifre (Tekrar)",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'id': 'id_password2'}),
         help_text="Şifreyi tekrar girin.",
     )
 
@@ -48,5 +48,6 @@ class CustomLoginForm(AuthenticationForm):
     )
     password = forms.CharField(
         label='Şifre',
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Şifre'})
+        widget=forms.PasswordInput(attrs={'id': 'id_password', 'class': 'form-control', 'placeholder': 'Şifre'})
     )
+

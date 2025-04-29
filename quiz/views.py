@@ -7,7 +7,7 @@ from django.db.models import Max, Avg
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from accounts.forms import CustomUserCreationForm  # yeni formu import et
+from accounts.forms import CustomUserCreationForm 
 
 
 @login_required

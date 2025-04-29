@@ -111,9 +111,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 LOGIN_REDIRECT_URL = '/'
-# settings.py
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-SESSION_COOKIE_AGE = 1800  # 30 dakika
+SESSION_COOKIE_AGE = 1800  
 SESSION_SAVE_EVERY_REQUEST = True
